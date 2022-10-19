@@ -39,7 +39,7 @@ SeeProducts.onclick = async() => {
         const btnAdd = document.getElementById(`add${product.id}`)
         const btnRemove = document.getElementById(`remove${product.id}`)
 
-        console.log(product.id)
+        console.log(product.id);
         btnAdd.addEventListener('click', () => {
             addToCart();
         })        
