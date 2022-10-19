@@ -1,20 +1,13 @@
 
-let catalogueData = [
-    {id:"1", name: "Mate", price: 2000, amount: 1},
-    {id:"2", name: "Bombilla", price: 1000, amount: 1},
-    {id:"3", name: "Termo", price: 10000, amount: 1},
-    {id:"4", name: "Yerba", price: 500, amount: 1},
-    {id:"5", name: "Bolso Matero", price: 5000, amount: 1}
-];
-
-
 const productsContainer = document.getElementById('productsContainer');
+const SeeProducts = document.getElementById('btnSeeProducts')
 const cartContainer = document.getElementById('cartContainer');
 const btnEmptyCart = document.getElementById('emptyCart');
 const totalPrice = document.getElementById('totalPrice');
 const checkout = document.getElementById('checkout');
 
 let cart = [];
+let productInCart = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('cart')){
@@ -23,6 +16,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+SeeProducts.onclick = async() => {
+
+    const infoCatalogue = await fetch('./catalogue.json')
+    const infoCatalogueJson = await infoCatalogue.json()
+    await infoCatalogueJson.forEach(e => {
+        cart.push(e)
+        console.log(e)
+    })
+    
+    infoCatalogueJson.map((product) =>{
+        const div = document.createElement('div')
+        div.innerHTML = `
+        <h1>${product.name}</h1>
+        <p>$${product.price}</p>
+        <button id="add${product.id}"> Agregar </button>
+        <button id="remove${product.id}"> Eliminar</button>
+        <hr>
+        `
+        productsContainer.appendChild(div)
+
+        const btnAdd = document.getElementById(`add${product.id}`)
+        const btnRemove = document.getElementById(`remove${product.id}`)
+
+        console.log(product.id)
+        btnAdd.addEventListener('click', () => {
+            addToCart();
+        })        
+        
+    })
+
+    }   
+
+    const addToCart = (prodId) => {
+
+        infoCatalogueJson.find((prod) => prod.id === prodId)
+           
+    }
+
+
+        
+            /*
+            btnRemove.onclick = (prodId) =>{
+                
+                    let item = cart.find((prod) => prod.id === prodId);
+                    const index = cart.indexOf(item)
+                    cart.splice(index,1)
+                    updateCart();
+                
+            }
+            */
 
 btnEmptyCart.addEventListener('click', () => {
     Swal.fire({
@@ -43,67 +86,6 @@ btnEmptyCart.addEventListener('click', () => {
     cart.length = 0;
     updateCart();
 })
-
-
-catalogueData.forEach((prod) => {
-    const div = document.createElement('div')
-    
-    div.innerHTML = 
-    `
-    <h3>${prod.name}</h3>
-    <p class="priceProduct">Precio:$ ${prod.price}</p>
-    <button id="add${prod.id}" class="btnAdd">Agregar </button>
-
-    `
-  
-    productsContainer.appendChild(div);
-
-    
-    let btn = document.getElementById(`add${prod.id}`)
-
-    btn.addEventListener('click', () => {
-        addCart(prod.id);
-    })
-
-})
-
-
-const addCart = (prodId) => {
-
-    const productExists = cart.some (prod => prod.id === prodId)
-
-    if(productExists){
-        const prod = cart.map(prod => {
-            if (prod.id === prodId){
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Producto agregado con éxito',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-
-                prod.amount++
-                
-            }
-        })
-
-    } else {
-
-        const item = catalogueData.find((prod) => prod.id === prodId);
-        cart.push(item);
-       // console.log(cart);
-}
-
-updateCart()
-}
-
-const removeFromCart = (prodId) => {
-    const item = cart.find((prod) => prod.id === prodId);
-    const index = cart.indexOf(item)
-    cart.splice(index,1)
-    updateCart();
-}
 
 const updateCart = () => {
 
