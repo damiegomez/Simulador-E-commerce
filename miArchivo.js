@@ -34,7 +34,7 @@ SeeProducts.onclick = async() => {
         <button id="remove${product.id}"> Eliminar</button>
         <hr>
         `
-        productsContainer.appendChild(div)
+        productsContainer.appendChild(div);
 
         const btnAdd = document.getElementById(`add${product.id}`)
         const btnRemove = document.getElementById(`remove${product.id}`)
@@ -53,10 +53,7 @@ SeeProducts.onclick = async() => {
         infoCatalogueJson.find((prod) => prod.id === prodId)
            
     }
-
-
-        
-            /*
+       /*
             btnRemove.onclick = (prodId) =>{
                 
                     let item = cart.find((prod) => prod.id === prodId);
@@ -65,7 +62,7 @@ SeeProducts.onclick = async() => {
                     updateCart();
                 
             }
-            */
+    */
 
 btnEmptyCart.addEventListener('click', () => {
     Swal.fire({
